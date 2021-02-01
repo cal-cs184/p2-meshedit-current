@@ -89,5 +89,22 @@ namespace CGL
   {
     // TODO Part 6.
     // This routine should increase the number of triangles in the mesh using Loop subdivision.
+    // One possible solution is to break up the method as listed below.
+
+    // 1. Compute new positions for all the vertices in the input mesh, using the Loop subdivision rule,
+    // and store them in Vertex::newPosition. At this point, we also want to mark each vertex as being
+    // a vertex of the original mesh.
+    
+    // 2. Compute the updated vertex positions associated with edges, and store it in Edge::newPosition.
+    
+    // 3. Split every edge in the mesh, in any order. For future reference, we're also going to store some
+    // information about which subdivide edges come from splitting an edge in the original mesh, and which edges
+    // are new, by setting the flat Edge::isNew. Note that in this loop, we only want to iterate over edges of
+    // the original mesh---otherwise, we'll end up splitting edges that we just split (and the loop will never end!)
+    
+    // 4. Flip any new edge that connects an old and new vertex.
+
+    // 5. Copy the new vertex positions into final Vertex::position.
+
   }
 }
