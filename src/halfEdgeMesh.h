@@ -96,7 +96,7 @@
  * three boundaries: one at the waist, and two at the ankles.  These boundaries
  * are represented by special faces in our halfedge mesh---in fact, rather than
  * being stored in the usual list of faces (HalfedgeMesh::faces), they are
- * stored in a separae list of boundary loops (HalfedgeMesh::boundaries).  Each
+ * stored in a separate list of boundary loops (HalfedgeMesh::boundaries).  Each
  * face (boundary or regular) also stored a flag Face::_isBoundary that
  * indicates whether or not it is a boundary.  This value can be queried via the
  * public method Face::isBoundary() (again: encapsulation!)  So for instance, if
@@ -308,7 +308,7 @@ namespace CGL
          FaceIter&       face( void ) { return _face;   } ///< access the face the half edge is on
 
          HalfedgeCIter   twin( void ) const { return _twin;   } ///< access the twin half edge (const iterator)
-         HalfedgeCIter   next( void ) const { return _next;   } ///< access the next half edge (comst iterator)
+         HalfedgeCIter   next( void ) const { return _next;   } ///< access the next half edge (const iterator)
          VertexCIter   vertex( void ) const { return _vertex; } ///< access the vertex in the half edge (const iterator)
          EdgeCIter       edge( void ) const { return _edge;   } ///< access the edge the half edge is on (const iterator)
          FaceCIter       face( void ) const { return _face;   } ///< access the face the half edge is on (const iterator)
@@ -433,6 +433,7 @@ namespace CGL
 
          /**
           * computes the average of the neighboring vertex positions and stores it in Vertex::centroid
+          * (* There is no need to implement this function for Project 2)
           */
          void computeCentroid( void );
 
