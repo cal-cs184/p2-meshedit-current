@@ -544,19 +544,31 @@ namespace CGL {
       }
 
       // polylist
+      bool e_triangles_exist = false;
       XMLElement* e_polylist = e_mesh->FirstChildElement( "polylist" );
+
+      if (!e_polylist){
+        e_polylist = e_mesh->FirstChildElement( "triangles" );
+        e_triangles_exist = true;
+      }
+
       if ( e_polylist ) {
 
         // material
-        string material_id = e_polylist->Attribute( "material" );
-        XMLElement* e_material = find_instance( e_materials, material_id );
-        if ( e_material ) {
-          Material* material = new Material();
-          parseMaterial( e_material, *material );
-          polymesh.material = material;
+        const char* material_id = e_polylist->Attribute( "material" );
+        if ( material_id ) {
+          XMLElement* e_material = find_instance( e_materials, material_id);
+          if (e_material) {
+            Material* material = new Material();
+            parseMaterial(e_material, *material);
+            polymesh.material = material;
+          } else {
+            stat("Error: undefined reference to material: " << material_id);
+            exit( -1 );
+          }
         } else {
-          stat("Error: undefined reference to material: " << material_id);
-          exit( -1 );
+          cerr << "WARNING: geometry i given no material: " << polymesh.id << ". A default material will be used." << endl;
+          polymesh.material = new Material();
         }
 
         // input arrays & array offsets
@@ -650,6 +662,12 @@ namespace CGL {
             ss >> size;
             sizes.push_back(size);
             num_indices += size * stride;
+          }
+
+        } else if (e_triangles_exist) {
+          for(size_t i = 0; i < num_polygons; ++i) {
+            sizes.push_back(3);
+            num_indices += 3 * stride;
           }
 
         } else {
@@ -760,7 +778,7 @@ namespace CGL {
           XMLElement* e_phong = e_technique->FirstChildElement( "phong" );
           if ( !e_phong ) {
             stat("Error: no phong shading is defined for material: " << material.id);
-            exit( -1 );
+            e_phong = e_technique->FirstChildElement( "lambert" );
           }
 
           // parse phong shading model
