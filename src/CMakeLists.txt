@@ -75,6 +75,15 @@ add_executable( meshedit
     ${COLLADA_VIEWER_HEADER}
 )
 
+if(APPLE)
+target_link_libraries( meshedit
+    CGL ${CGL_LIBRARIES}
+    glew ${GLEW_LIBRARIES}
+    glfw ${GLFW_LIBRARIES}
+    ${OPENGL_LIBRARIES}
+    ${FREETYPE_LIBRARIES}
+)
+else()
 target_link_libraries( meshedit
     CGL ${CGL_LIBRARIES}
     glew ${GLEW_LIBRARIES}
@@ -83,6 +92,7 @@ target_link_libraries( meshedit
     ${FREETYPE_LIBRARIES}
     ${CMAKE_CURRENT_SOURCE_DIR}/dirent/glut32.lib
 )
+endif(APPLE)
 
 #-------------------------------------------------------------------------------
 # Platform-specific configurations for target
